@@ -1,0 +1,30 @@
+{
+  "name": "roastyclient",
+  "version": "1.0.0",
+  "description": "Roasty Website Client",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --content-base app/",
+    "build": "webpack -p",
+    "watch": "webpack --watch"
+  },
+  "author": "Evan Lynch",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
+    "immutability-helper": "3.0.1",
+    "jquery": "3.5.0",
+    "react": "16.13.1",
+    "react-color": "2.18.0",
+    "react-dom": "16.13.1",
+    "socket.io-client": "^2.3.0",
+    "webpack": "^4.42.1",
+    "webpack-notifier": "^1.8.0"
+  }
+}

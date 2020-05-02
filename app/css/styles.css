@@ -1,0 +1,6 @@
+
+.pixel {
+}
+.pixel:hover {
+    opacity: 0.5;
+}
