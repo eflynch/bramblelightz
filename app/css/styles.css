@@ -6,5 +6,6 @@ body {
 }
 
 .pixel:hover {
-    opacity: 0.5;
+    filter:brightness(1.5);
+    opacity:0.9;
 }

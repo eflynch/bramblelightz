@@ -2,48 +2,56 @@ import React, {useState} from 'react';
 import {render} from 'react-dom';
 import io from 'socket.io-client';
 
-import { SliderPicker } from 'react-color';
+import { ChromePicker } from 'react-color';
 
 const ColorPicker = ({color, setColor}) => {
     return (
-        <SliderPicker color={color} onChangeComplete={(color)=>{
+        <ChromePicker color={color} disableAlpha={true} onChange={(color)=>{
             setColor(color.hex);
         }}/>
     );
 }
 
 
-const Pixel = ({color, onClick, newColor, barIndex, pixelIndex, sendCommand}) => {
+const Pixel = ({color, paint, painting}) => {
     return (
         <div className="pixel" style={{
             backgroundColor: color,
-            width: 30,
-            flexGrow: 1
-        }} onClick={(e)=>{onClick();}} />
+            flexGrow: 1,
+            margin: 5
+        }} onMouseDown={paint} 
+
+        onMouseEnter={(e)=>{
+            if (painting) {
+                paint();
+            }
+        }} />
     );
 }
 
 
 const Session = ({pixels, sendCommand}) => {
     const [color, setColor] = useState("#FF0000");
+    const [painting, setPainting] = useState(false);
 
     return (
-        <div style={{height:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
-            <div style={{ width: "80vh", margin: 10}}>
+        <div onMouseDown={(e)=>{setPainting(true);}} onMouseUp={(e)=>{setPainting(false);}} style={{
+            height:"90vh", width:"90vw", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"stretch", margin:"auto" 
+        }}>
+            <div style={{margin: 10}}>
                 <ColorPicker color={color} setColor={setColor}/>
             </div>
             <div style={{
                 display:"flex",
                 flexDirection:"row",
                 justifyContent:"space-between",
-                width: "80vh",
-                height: "80vh"}}>
+                flexGrow: 1}}>
                 {pixels.map((bar, barIndex)=>{
                     return (
-                        <div key={barIndex} style={{display:"flex", flexDirection:"column-reverse"}}>
+                        <div key={barIndex} style={{display:"flex", flexDirection:"column-reverse", flexGrow: 1}}>
                             {bar.map((pixel, pixelIndex) => {
                                 return (
-                                    <Pixel key={pixelIndex} color={pixel} onClick={(e)=>{
+                                    <Pixel key={pixelIndex} color={pixel} painting={painting} paint={()=>{
                                         sendCommand({
                                             bar_index: barIndex,
                                             pixel_index: pixelIndex,
