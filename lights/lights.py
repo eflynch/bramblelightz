@@ -1,5 +1,5 @@
 import serial
-from queue import Queue, Empty
+from queue import Queue
 from threading import Thread
 import time
 
@@ -24,18 +24,11 @@ def _frame_to_bytes(frame):
             bs += b
 
     value = rs + gs + bs
-    # value = value[2:] + value[:2]
     return bytes.fromhex("ff" + value)
 
-def _handle_command(ser, cmd):
-    (cmd_name, payload) = cmd
-    if cmd_name == "bytes":
-        ser.write(bytes.fromhex("ff" + payload))
-    elif cmd_name == "frame":
-        ser.write(_frame_to_bytes(payload))
-
-def _start_lights():
+def _start_lights(command_handler):
     q = Queue()
+    last_frame = [None]
 
     success = False
     failures = []
@@ -53,43 +46,68 @@ def _start_lights():
             print(failure)
     assert success
 
+    def write_frame(frame):
+        ser.write(_frame_to_bytes(frame))
+        last_frame[0] = frame
 
     def _communicate():
         while True:
-            try:
-                cmd = q.get()
-                ser.reset_input_buffer()
-                _handle_command(ser, cmd)
-                ser.reset_input_buffer()
-                q.task_done()
-            except Empty:
-                pass
+            cmd = q.get()
+            command_handler(cmd, write_frame)
+            ser.reset_input_buffer()
+            q.task_done()
 
     t = Thread(target=_communicate)
     t.daemon = True
     t.start()
 
-    return (q, ser)
+    return (q, last_frame, ser)
 
 
 def _send_cmd(token, cmd):
-    q, ser = token
+    q, _, _ = token
     q.put(cmd)
 
 
 def _stop_lights(token):
-    q, ser = token
+    q, _, _ = token
     q.join()
 
 
+def _get_status(token):
+    q, last_frame[0], _ = token
+    return (q.qsize(), last_frame)
+
+
 class Lights:
+    def __init__(self, command_handler):
+        self._command_handler = command_handler
+        self._token = None
+
+    def open():
+        self._token = _start_lights(self._command_handler)
+
+    def close():
+        _stop_lights(self._token)
+
     def __enter__(self):
-        self._token = _start_lights()
+        self.open()
         return self
 
     def __exit__(self, *exc):
-        _stop_lights(self._token)
+        self.close()
 
     def send_cmd(self, cmd):
+        if not self._token:
+            raise Exception("Lights are not open")
         _send_cmd(self._token, cmd)
 
+    def get_state(self):
+        if not self._token:
+            raise Exception("Lights are not open")
+
+        (q_size, last_frame) = _get_status(self._token)
+        return {
+            "q_size": q_size,
+            "last_frame": last_frame
+        }

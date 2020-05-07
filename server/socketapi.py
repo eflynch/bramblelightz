@@ -35,7 +35,7 @@ def connect_namespace(socketio, namespace):
         color = data["color"]
         client_id = request.sid
         pixels[bar_index][pixel_index] = color
-        send_json("http://10.0.1.189:5000", {"frame": pixels})
+        # send_json("http://10.0.1.189:5000", {"frame": pixels})
         emit("pixels", {"pixels": pixels}, broadcast=True)
 
     @socketio.on('disconnect', namespace=namespace)
