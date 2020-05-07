@@ -40,7 +40,7 @@ const Session = ({pixels, sendCommand}) => {
                 height: "80vh"}}>
                 {pixels.map((bar, barIndex)=>{
                     return (
-                        <div key={barIndex} style={{display:"flex", flexDirection:"column"}}>
+                        <div key={barIndex} style={{display:"flex", flexDirection:"column-reverse"}}>
                             {bar.map((pixel, pixelIndex) => {
                                 return (
                                     <Pixel key={pixelIndex} color={pixel} onClick={(e)=>{
