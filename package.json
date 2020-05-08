@@ -23,6 +23,7 @@
     "react": "16.13.1",
     "react-color": "2.18.0",
     "react-dom": "16.13.1",
+    "react-input-number": "5.0.19",
     "socket.io-client": "^2.3.0",
     "webpack": "^4.42.1",
     "webpack-notifier": "^1.8.0"

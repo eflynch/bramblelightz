@@ -27,7 +27,7 @@ def _handle_cmd(frames, cmd):
         frames[frame_index]["duration"] = duration
 
     elif name == "add-frame":
-        frames.apend({
+        frames.append({
             "pixels": [
                 ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
                 ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],

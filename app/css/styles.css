@@ -1,6 +1,16 @@
 body {
     background-color: black;
     color: white;
+    margin: 0;
+}
+
+#header {
+    user-select: none;
+    background-color: #669933;
+    height: 40px;
+    font-family: Optima;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .pixel {
@@ -9,4 +19,20 @@ body {
 .pixel:hover {
     filter:brightness(1.5);
     opacity:0.9;
+}
+
+button {
+    background-color: black;
+    border: white 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+    border-radius: 4px;
+    font-family: Optima;
+    font-weight: bold;
+}
+
+button:active {
+    background-color: white;
+    color: black;
 }
