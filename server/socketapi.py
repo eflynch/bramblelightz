@@ -3,15 +3,8 @@ from flask_socketio import emit
 from flask import request
 import json
 
+from pixelwrapper import PixelWrapper
 
-pixels = [
-    ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
-    ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
-    ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
-    ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
-    ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
-    ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
-]
 
 def send_json(url, data):
     req = urllib.request.Request(url)
@@ -20,23 +13,39 @@ def send_json(url, data):
     jsondataasbytes = jsondata.encode('utf-8')   # needs to be bytes
     req.add_header('Content-Length', len(jsondataasbytes))
     response = urllib.request.urlopen(req, jsondataasbytes)
-    return response
+    string = response.read().decode('utf-8')
+    json_obj = json.loads(string)
+    return json_obj
 
-def connect_namespace(socketio, namespace):
+
+
+
+def connect_namespace(socketio, namespace, pixels):
     @socketio.on('join', namespace=namespace)
     def handle_join(data):
-        client_id = request.sid
-        emit("pixels", {"pixels": pixels})
+        emit("frames", {"frames": pixels.get_state()}, broadcast=True)
 
-    @socketio.on('cmd', namespace=namespace)
+    @socketio.on('pixel', namespace=namespace)
     def handle_cmd(data):
-        bar_index = data["bar_index"]
-        pixel_index = data["pixel_index"]
-        color = data["color"]
+        pixels.send_cmd(("update-pixel", data))
         client_id = request.sid
-        pixels[bar_index][pixel_index] = color
-        # send_json("http://10.0.1.189:5000", {"frame": pixels})
-        emit("pixels", {"pixels": pixels}, broadcast=True)
+
+    @socketio.on('duration', namespace=namespace)
+    def handle_cmd(data):
+        pixels.send_cmd(("update-duration", data))
+        client_id = request.sid
+
+    @socketio.on('copy', namespace=namespace)
+    def handle_cmd(data):
+        pixels.send_cmd(("copy", data))
+        client_id = request.sid
+        
+
+    @socketio.on('send', namespace=namespace)
+    def handle_send(data):
+        response = send_json("http://10.0.1.189:5000/animation", {
+            "frames": pixels.get_state() 
+        })
 
     @socketio.on('disconnect', namespace=namespace)
     def handle_disconnect():
@@ -44,5 +53,11 @@ def connect_namespace(socketio, namespace):
 
 
 def connect_socketio(socketio):
-    connect_namespace(socketio, namespace="/pixels")
+    namespace = "/frames"
+
+    def on_change(frames):
+        socketio.emit("frames", {"frames": frames}, broadcast=True, namespace=namespace)
+
+    with PixelWrapper(on_change) as pixels:
+        connect_namespace(socketio, namespace=namespace, pixels=pixels)
 

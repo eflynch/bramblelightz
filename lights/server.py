@@ -31,10 +31,11 @@ def command_handler(cmd, write_frame):
     if cmd == "frame":
         write_frame(payload["frame"])
     elif cmd == "animation":
-        spf = payload["spf"]
         for frame in payload["frames"]:
-            write_frame(frame)
-            time.sleep(spf)
+            duration = frame["duration"]
+            pixels = frame["pixels"]
+            write_frame(pixels)
+            time.sleep(duration)
 
 
 if __name__ == "__main__":

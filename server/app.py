@@ -12,7 +12,7 @@ from socketapi import connect_socketio
 app = Flask(__name__)
 app.register_blueprint(api, url_prefix="/api")
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_handlers='gevent')
 
 if os.path.exists('/etc/config.json'):
     with open('/etc/config.json') as config_file:
