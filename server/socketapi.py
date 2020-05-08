@@ -28,18 +28,22 @@ def connect_namespace(socketio, namespace, pixels):
     @socketio.on('pixel', namespace=namespace)
     def handle_cmd(data):
         pixels.send_cmd(("update-pixel", data))
-        client_id = request.sid
 
     @socketio.on('duration', namespace=namespace)
-    def handle_cmd(data):
+    def handle_duration(data):
         pixels.send_cmd(("update-duration", data))
-        client_id = request.sid
 
     @socketio.on('copy', namespace=namespace)
-    def handle_cmd(data):
+    def handle_copy(data):
         pixels.send_cmd(("copy", data))
-        client_id = request.sid
-        
+
+    @socketio.on('delete-frame', namespace=namespace)
+    def handle_delete(data):
+        pixels.send_cmd(("delete-frame", data))
+
+    @socketio.on('add-frame', namespace=namespace)
+    def handle_add(data):
+        pixels.send_cmd(("add-frame", data))
 
     @socketio.on('send', namespace=namespace)
     def handle_send(data):
