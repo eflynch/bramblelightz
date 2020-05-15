@@ -172,7 +172,7 @@ const Session = ({frames, updatePixel, updateDuration, addFrame, deleteFrame, se
                             }
                             setFrame(i);
                             doIt(i+1);
-                        }, frames[i].duration);
+                        }, frames[i].duration * 1000);
                     };
                     doIt(0);
                 }}>play</button>

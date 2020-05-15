@@ -47,7 +47,7 @@ def connect_namespace(socketio, namespace, pixels):
 
     @socketio.on('send', namespace=namespace)
     def handle_send(data):
-        response = send_json("http://10.0.1.189:5000/animation", {
+        response = send_json("http://24.61.44.168:5000/animation", {
             "frames": pixels.get_state() 
         })
 
