@@ -10,6 +10,7 @@ from api import api
 from socketapi import connect_socketio
 
 app = Flask(__name__)
+
 app.register_blueprint(api, url_prefix="/api")
 
 socketio = SocketIO(app, async_handlers='gevent')
@@ -25,7 +26,7 @@ else:
 
 @app.route("/", methods=['GET'])
 def index():
-    return reactstub("Roasty Pixels", ["app/css/styles.css"], ["app/main.js"], bootstrap=json.dumps({}))
+    return reactstub("Bramblelightz", ["app/css/styles.css"], ["app/main.js"], bootstrap=json.dumps({}))
 
 
 connect_socketio(socketio)
