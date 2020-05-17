@@ -36,8 +36,8 @@ function getBrambleLightz(){
             (cmd) => {
                 socket.emit('duration', cmd);
             },
-            () => {
-                socket.emit('add-frame', "");
+            (cmd) => {
+                socket.emit('add-frame', cmd);
             },
             (cmd) => {
                 socket.emit('delete-frame', cmd);

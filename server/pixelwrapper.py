@@ -27,6 +27,7 @@ def _handle_cmd(frames, cmd):
         frames[frame_index]["duration"] = duration
 
     elif name == "add-frame":
+        duration = args
         frames.append({
             "pixels": [
                 ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
@@ -36,12 +37,12 @@ def _handle_cmd(frames, cmd):
                 ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
                 ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"],
             ],
-            "duration": 0.33
+            "duration": args
         })
 
     elif name == "delete-frame":
         frame_index = args["frame_index"]
-        if frame_index < len(frames):
+        if frame_index < len(frames) and len(frames) > 1:
             del frames[frame_index]
 
 def _start_wrap(callback):

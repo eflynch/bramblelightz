@@ -17,14 +17,14 @@ export default function({frames, updatePixel, updateDuration, addFrame, deleteFr
                         if (frame > maxFrame - 1) {
                             setFrame(maxFrame - 1);
                         }
-                        deleteFrame({frame_index:frame});
+                        deleteFrame({frame_index:i});
                     } else {
                         setFrame(i);
                     }
                 }} active={frame === i} />)}
                 <div
                     onClick={()=>{
-                        addFrame();
+                        addFrame(frames[frame].duration);
                     }}
                     style={{
                         display:"flex",

@@ -9,7 +9,7 @@ export default function({pixels, duration, updateDuration, updatePixel}) {
 
     return (
         <div style={{display: "flex", flexGrow: 5, alignSelf:"stretch"}} >
-            <Controls duration={duration} setDuration={updateDuration} color={color} setColor={setColor} style={{padding: 10, flexGrow: 1, display:"flex", flexDirection:"column"}}/>
+            <Controls duration={duration} setDuration={updateDuration} color={color} setColor={setColor} />
             <div style={{display: "flex", flexGrow: 8, alignSelf:"stretch"}}
                 onMouseUp={(e)=>{setPainting(false);}}
                 onMouseDown={(e)=>{setPainting(true);}}>
