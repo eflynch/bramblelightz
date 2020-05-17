@@ -44,8 +44,8 @@ export default function({frames, updatePixel, updateDuration, addFrame, deleteFr
             }} updatePixel={({...parts}) => {
                 updatePixel({...parts, frame_index: frame});}} />
             <div style={{display:"flex"}}>
-                <button onClick={send}>send</button>
-                <button onClick={()=> {
+                <button title="send it to the lights at Brambleberry" onClick={send}>send to lightz</button>
+                <button title="play it here in the browser" onClick={()=> {
                     let doIt = (i) => {
                         setTimeout(()=>{
                             if (i > maxFrame) {
@@ -56,7 +56,7 @@ export default function({frames, updatePixel, updateDuration, addFrame, deleteFr
                         }, frames[i].duration * 1000);
                     };
                     doIt(0);
-                }}>play</button>
+                }}>play it here</button>
             </div>
         </div>
     );

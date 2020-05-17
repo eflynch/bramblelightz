@@ -2,10 +2,9 @@ import React from 'react';
 
 const Pixel = ({color, paint, painting}) => {
     return (
-        <div className="pixel" style={{
+        <div className={"pixel" + (paint ? " active" : "")} style={{
             backgroundColor: color,
             flexGrow: 1,
-            margin: 1
         }} onMouseDown={paint} 
 
         onMouseEnter={(e)=>{

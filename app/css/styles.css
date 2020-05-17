@@ -1,35 +1,52 @@
+form {
+    margin: 0;
+}
+
 body {
     background-color: black;
     color: white;
     margin: 0;
+    font-family: Optima;
 }
 
 #header {
     user-select: none;
     background-color: #669933;
-    height: 40px;
-    font-family: Optima;
+    height: 48px;
     padding-left: 30px;
     padding-right: 30px;
 }
 
-.pixel {
+#header span {
+    font-size: 24px;
+    font-family: Optima;
 }
 
-.pixel:hover {
-    filter:brightness(1.5);
-    opacity:0.9;
+.pixel {
+    margin: 1px;
+}
+
+.pixel.active:hover {
+    margin: 0;
+    border-style: dotted;
+    border-width: 0.5px;
+    border-color:white!;
+    /*filter:brightness(1.5);*/
+    /*opacity:0.9;*/
 }
 
 button {
+    font-family: Optima;
     background-color: black;
     border: white 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     color: white;
     border-radius: 4px;
-    font-family: Optima;
     font-weight: bold;
+    font-size: 24px;
 }
 
 button:active {
